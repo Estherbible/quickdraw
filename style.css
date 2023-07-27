@@ -6,3 +6,35 @@ body{
 #show_sketch{
     float:right;
 }
+
+p{
+    font-size: 25px;
+    padding-top: 10px;
+}
+
+h1{
+    background-color: lightgreen;
+    color: grey;
+}
+
+canvas{
+    border: 4px dashed lightblue;
+    border-radius: 20px;
+    animation-name: example;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes example{
+    from{
+        box-shadow: 1px 1px 25px gray;
+    }
+
+    to{
+        box-shadow: 1px 1px 25px black; 
+    }
+}
+
+#toBeDrawn{
+    color: red;
+}
