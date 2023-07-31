@@ -9,13 +9,21 @@ function setup() {
     canvas = createCanvas(300, 300)
     canvas.center()
     background("white")
+    canvas.mouseReleased(classifyCanvas)
 }
 
 function preload() {
+    classifier = ml5.imageClassifier("DoodleNet")
 
 }
 
 function draw() {
+    strokeWeight(6)
+    stroke(0)
+    if (mouseIsPressed) {
+        line(pmouseX, pmouseY, mouseX, mouseY)
+    }
+
     checksketch()
     if (drawnsketch == sketch) {
         answerholder = "set"
@@ -26,7 +34,7 @@ function draw() {
 
 function checksketch() {
     timerCounter++
-    document.getElementById("timer").innerHTML + "timer: " + timerCounter
+    document.getElementById("timer").innerHTML = "timer: " + timerCounter
     if (timerCounter > 400) {
         timerCounter = 0
         timercheck = "completed"
@@ -43,4 +51,19 @@ function updatecanvas(){
     randomnumber=Math.floor((Math.random()*quick_draw_data_set.length)+1)
     sketch=quick_draw_data_set[randomnumber]
     document.getElementById("toBeDrawn").innerHTML="sketch to Be Drawn: "+sketch
+}
+
+function classifyCanvas() {
+    classifier.classify(canvas, gotResult)
+}
+
+function gotResult(error, result) {
+    if (error) {
+        console.error(error);
+    } else {
+        console.log(result);
+        document.getElementById("yourSketch").innerHTML = "your Sketch: " + result[0].label;
+        document.getElementById("confidence").innerHTML = "confidence: " + Math.round(result[0].confidence * 100) + "%";
+        drawnsketch=result[0].label
+    }
 }
